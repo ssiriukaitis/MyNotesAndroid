@@ -44,4 +44,5 @@ public class MainActivity extends AppCompatActivity {
 //        TextView myTextView = findViewById(R.id.MyTextView);
 //        myTextView.setText("Labas, Sigitai");
 //    }
+    //
 }

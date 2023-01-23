@@ -11,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
         DialogInterface.OnClickListener listener = (dialogInterface, i) ->{
-            Log.i(TAG, "Removed on long click" + position + ", #:" + this.notesList.get(position));
-
+            //Log.i(TAG, "Removed on long click" + position + ", #:" + this.notesList.get(position));
+            displayDeleteMessage("Removed note (id: " + this.notesList.get(position).getId() + "from list");
             notesList.remove(position);
             adapter.notifyDataSetChanged();
 
@@ -105,5 +107,7 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
-
+    public void displayDeleteMessage(String message){
+        Snackbar.make(listView, message, Snackbar.LENGTH_LONG).show();
+    }
 }

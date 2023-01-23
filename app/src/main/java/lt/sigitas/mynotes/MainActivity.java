@@ -1,7 +1,9 @@
 package lt.sigitas.mynotes;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,20 +19,21 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "my_notes_main";
     private ListView listView;
     private ArrayAdapter<Note> adapter;
+    private List<Note> notesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        List<Note> notesList =  generateNotesList(15);
+        this.notesList =  generateNotesList(15);
 
         setUpViews();
 
-        setUpListViewAdapter(notesList);
+        setUpListViewAdapter();
 
 
-        setUpClick(notesList);
-        setUpLongClick(notesList);
+        setUpClick();
+        setUpLongClick();
 
 
     }
@@ -50,34 +53,33 @@ public class MainActivity extends AppCompatActivity {
         this.listView = findViewById(R.id.listView);
     }
 
-    private void setUpListViewAdapter(List<Note> notesList) {
+    private void setUpListViewAdapter() {
         this.adapter = new ArrayAdapter<>(
                 MainActivity.this,
                 android.R.layout.simple_list_item_1,
-                notesList
+                this.notesList
         );
 
         this.listView.setAdapter(adapter);
     }
 
-    private void setUpClick(List<Note> notesList) {
+    private void setUpClick() {
         AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Log.i(TAG, "onItemClick" + position + ", #:" + notesList.get(position));
+                Log.i(TAG, "onItemClick" + position + ", #:" + MainActivity.this.notesList.get(position));
 
             }
         };
         listView.setOnItemClickListener(listener);
     }
-    private void setUpLongClick(List<Note> notesList) {
+    private void setUpLongClick() {
         AdapterView.OnItemLongClickListener listenerLongClick = new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i(TAG, "Removed on long click" + position + ", #:" + notesList.get(position));
 
-                notesList.remove(position);
-                adapter.notifyDataSetChanged();
+
+                displayNoteDeleteAlertDisplay(position);
 
                 return false;
             }
@@ -86,9 +88,22 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(listenerLongClick);
     }
 
+    private void displayNoteDeleteAlertDisplay(int position) {
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
+        DialogInterface.OnClickListener listener = (dialogInterface, i) ->{
+            Log.i(TAG, "Removed on long click" + position + ", #:" + this.notesList.get(position));
 
+            notesList.remove(position);
+            adapter.notifyDataSetChanged();
+
+        } ;
+        builder.setMessage("Are you sure want to remove?");
+        builder.setPositiveButton("Yes", listener);
+        builder.setNegativeButton("No", null);
+        builder.show();
+    }
 
 
 }

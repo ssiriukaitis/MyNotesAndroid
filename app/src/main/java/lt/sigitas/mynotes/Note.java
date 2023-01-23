@@ -3,6 +3,7 @@ package lt.sigitas.mynotes;
 import androidx.annotation.NonNull;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Note {
 
@@ -12,10 +13,14 @@ public class Note {
     private LocalDateTime creationDate;
     private LocalDateTime updateDate;
 
+    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
     public Note(int id, String name, String content) {
         this.id = id;
         this.name = name;
         this.content = content;
+        this.creationDate = LocalDateTime.now();
+        this.updateDate = LocalDateTime.now();
     }
 
     public int getId() {
@@ -62,9 +67,9 @@ public class Note {
     @Override
     public String toString() {
         return id +
-                " / " + name +
-                " / " + content +
-                " / " + creationDate +
-                " / " + updateDate;
+                " | name: " + name +
+                "\n" + content +
+                "\n created: " + creationDate.format(formatter) +
+                "\n updated: " + updateDate.format(formatter);
     }
 }

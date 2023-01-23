@@ -2,19 +2,14 @@ package lt.sigitas.mynotes;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         setUpClick(notesList);
-        setUpLongClick();
+        setUpLongClick(notesList);
 
 
     }
@@ -75,10 +70,15 @@ public class MainActivity extends AppCompatActivity {
         };
         listView.setOnItemClickListener(listener);
     }
-    private void setUpLongClick() {
+    private void setUpLongClick(List<Note> notesList) {
         AdapterView.OnItemLongClickListener listenerLongClick = new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i(TAG, "Removed on long click" + position + ", #:" + notesList.get(position));
+
+                notesList.remove(position);
+                adapter.notifyDataSetChanged();
+
                 return false;
             }
 

@@ -13,38 +13,46 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ListView listView;
+    private ArrayAdapter<Note> adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        // 1. data
-        List<Note> notesList = new ArrayList<>();
+        List<Note> notesList =  generateNotesList(15);
 
+        setUpViews();
 
-        for (int i = 1; i <= 15; i++){
-            Note note = new Note(i, "name" + i, "some note text" + i);
-
-            notesList.add(note);
-        }
+        setUpListViewAdapter(notesList);
 
 
+    }
 
-        // 2. Adapter
-        ArrayAdapter<Note> adapter = new ArrayAdapter<>(
+    private void setUpListViewAdapter(List<Note> notesList) {
+        this.adapter = new ArrayAdapter<>(
                 MainActivity.this,
                 android.R.layout.simple_list_item_1,
                 notesList
         );
-        // 3. View (List view)
 
-        ListView listView = findViewById(R.id.listView);
-        listView.setAdapter(adapter);
-
+        this.listView.setAdapter(adapter);
     }
-//    public void doSomething(){
-//        TextView myTextView = findViewById(R.id.MyTextView);
-//        myTextView.setText("Labas, Sigitai");
-//    }
-    //
+
+    private void setUpViews() {
+        setContentView(R.layout.activity_main);
+        this.listView = findViewById(R.id.listView);
+    }
+
+
+    private List<Note> generateNotesList(int recordNo) {
+        List<Note> notesList = new ArrayList<>();
+        for (int i = 1; i <= recordNo; i++){
+            Note note = new Note(i, "name" + i, "some note text" + i);
+
+            notesList.add(note);
+        }
+        return notesList;
+    }
+
 }
